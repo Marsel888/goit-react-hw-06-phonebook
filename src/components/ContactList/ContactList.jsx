@@ -1,9 +1,9 @@
-import { ContactsItem, UlList, ButtonList } from '../style.styled'
-import { useSelector, useDispatch } from 'react-redux'
-import { Delete } from '../../redux/store'
+import { ContactsItem,ButtonList } from '../style.styled'
+import { useDispatch } from 'react-redux'
+import { Delete } from '../../redux/slice'
 export default function ContactList({ visibal, click }) {
   const dispatch = useDispatch()
-  console.log(visibal)
+  
   return (
     <ContactsItem>
       {visibal.map((select) => (
