@@ -1,11 +1,14 @@
 import React from 'react'
 import { InputRe, Button, Form } from '../style.styled'
 import { useState } from 'react'
-
-function ContackForm({ submitForm, contacts }) {
+import { useDispatch, useSelector } from 'react-redux'
+import { addContact } from '../../redux/slice'
+import { nanoid } from 'nanoid'
+function ContackForm({ contacts }) {
   const [name, setName] = useState('')
   const [number, setNumber] = useState('')
-
+  let select = useSelector((state) => state.user.contacts)
+  const dispatch = useDispatch()
   const inputChange = (e) => {
     if (e.target.name === 'name') {
       setName(e.target.value)
@@ -14,14 +17,26 @@ function ContackForm({ submitForm, contacts }) {
       setNumber(e.target.value)
     }
   }
+  const test = (data) => {
+    return select.some((item) => {
+      return item.name?.toLowerCase() === data
+    })
+  }
+
+  const submitForm = ({ name, number }) => {
+    if (test(name.toLowerCase())) {
+      return alert(`${name} уже есть`)
+    }
+    localStorage.setItem('Контакты', JSON.stringify(select))
+    dispatch(addContact({ id: nanoid(), name, number }))
+  }
 
   const hendlerSubmit = (e) => {
     e.preventDefault()
     submitForm({ name, number })
 
-    // dispatch(logIn({ id: nanoid(), name, number }))
-    setName(' ')
-    setNumber(' ')
+    setName('')
+    setNumber('')
   }
 
   return (
